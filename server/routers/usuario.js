@@ -1,11 +1,15 @@
 const express = require("express");
+const bcrypt = require("bcrypt");
+const _ = require("underscore");
 const app = express();
 
 const Usuario = require("../models/usuario");
-const bcrypt = require("bcrypt");
-const _ = require("underscore");
+const {
+    verifyToken,
+    verifyAdminRole,
+} = require("../middlewares/autenticacion");
 
-app.get("/usuario", (req, res) => {
+app.get("/usuario", verifyToken, (req, res) => {
     let desde = Number(req.query.desde || 0);
     let limite = Number(req.query.limite || 5);
 
@@ -30,7 +34,7 @@ app.get("/usuario", (req, res) => {
         });
 });
 
-app.post("/usuario", async(req, res) => {
+app.post("/usuario", [verifyToken, verifyAdminRole], async(req, res) => {
     let body = req.body;
 
     // Llenamos el objeto
@@ -65,7 +69,7 @@ app.post("/usuario", async(req, res) => {
     });
 });
 
-app.put("/usuario/:id", (req, res) => {
+app.put("/usuario/:id", [verifyToken, verifyAdminRole], (req, res) => {
     let id = req.params.id;
     //let body = _.pick(req.body, ["nombre", "email", "img", "role", "estado"]);
     let body = _.omit(req.body, "password", "google");
@@ -89,7 +93,7 @@ app.put("/usuario/:id", (req, res) => {
     );
 });
 
-app.delete("/usuario/:id", (req, res) => {
+app.delete("/usuario/:id", [verifyToken, verifyAdminRole], (req, res) => {
     let id = req.params.id;
 
     Usuario.findByIdAndUpdate(
