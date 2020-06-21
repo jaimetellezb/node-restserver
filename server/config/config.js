@@ -35,5 +35,4 @@ process.env.URL_MONGODB =
  * google client ID
  */
 process.env.CLIENT_ID =
-    process.env.CLIENT_ID ||
     "558451916625-g4cfqq3rp3sjp1ijocsh8j62jql26inc.apps.googleusercontent.com";
