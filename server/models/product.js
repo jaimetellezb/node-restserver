@@ -9,9 +9,10 @@ var productSchema = new Schema({
     },
     priceUni: {
         type: Number,
-        required: [true, "El precio únitario es necesario"],
+        required: [true, "El precio unitario es necesario"],
     },
     description: { type: String, required: false },
+    img: { type: String, required: false },
     available: { type: Boolean, required: true, default: true },
     category: { type: Schema.Types.ObjectId, ref: "Category", required: true },
     user: { type: Schema.Types.ObjectId, ref: "Usuario" },
